@@ -12,7 +12,8 @@ disp('There may be an error displayed when choosing your Dropbox - ignore this a
 disp('Locate group .mat file.');
 DropboxPath = dropbox();
 
-[GroupFileName,GroupPathName] = uigetfile(DropboxPath,'Select group file');
+[GroupFileName,GroupPathName] = uigetfile([DropboxPath,filesep,'Magneto',filesep,...
+    'MagnetoData'],'Select group file');
 disp('Loading group file...');
 load ([GroupPathName GroupFileName]);
 disp(['Successfully loaded ',GroupFileName]);
@@ -176,9 +177,10 @@ for i = 1:nSubjects
         else
             StartEventIdx_temp = find(StartTrigger{i,j} ~= StartTrigger{i,j}(1),1);
             %DirEventIdx_temp = find(DirEventMat{i,j} ~= DirEventMat{i,j}(1),1);
-            DirEventIdx_temp = find(DirectionTrigger{i,j} ~= DirectionTrigger{i,j}(1),1);
+            %DirEventIdx_temp = find(DirectionTrigger{i,j} ~= DirectionTrigger{i,j}(1),1);
+            DirEventIdx_temp = findTrigger(PosX{i,j},'dir');
             %EndEventIdx_temp = find(EndTrigger{i,j} ~= EndTrigger{i,j}(1),1);
-            EndEventIdx_temp = findEndTrigger(PosX{i,j});
+            EndEventIdx_temp = findTrigger(PosX{i,j},'end');
             ResetEventIdx_temp = find(ResetTrigger{i,j} ~= ResetTrigger{i,j}(1),1);
         end
         
@@ -374,6 +376,10 @@ for i = 1:size(Subjects,1)
             %change manuever takes place and save this index.
             %access handwheel position at this same index and check sign of
             %that handwheel signal
+            
+            %figure,plot(PosY{i,j})
+            %DirEvent.Idx(i,j)
+            %EndEvent.Idx(i,j)
             [AllPks{i,j},AllLocs{i,j}] = findpeaks(abs(PosY{i,j}(DirEvent.Idx(i,j):EndEvent.Idx(i,j))),...
                 'MinPeakHeight',1); %find peaks of 1 meter and greater (absolute value used here)
             

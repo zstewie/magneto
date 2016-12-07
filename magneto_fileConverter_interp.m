@@ -142,10 +142,10 @@ for i = 1:length(subjectNames)
             %time{i,j} = time{i,j}(PosYUniqueIdx);
             time{i,j} = (interp1(PosX{i,j},time{i,j}(PosXUniqueIdx),...
                 PosX{i,j},InterpMethod));
-            DirectionTrigger{i,j} = dataMain(TrialIdxRange,3);
+            DirectionTrigger{i,j} = dataMain(TrialIdxRange,11);
             DirectionTrigger{i,j} = interp1(PosX{i,j},DirectionTrigger{i,j}(PosXUniqueIdx),...
                 PosX{i,j},InterpMethod);
-            EndTrigger{i,j} = dataMain(TrialIdxRange,11);
+            EndTrigger{i,j} = dataMain(TrialIdxRange,3);
             EndTrigger{i,j} = interp1(PosX{i,j},EndTrigger{i,j}(PosXUniqueIdx),...
                 PosX{i,j},InterpMethod);
             ResetTrigger{i,j} = dataMain(TrialIdxRange,4);
@@ -155,7 +155,7 @@ for i = 1:length(subjectNames)
             StartEventMat{i,j} = dataMain(TrialIdxRange,6);
             StartEventMat{i,j} = interp1(PosX{i,j},StartEventMat{i,j}(PosXUniqueIdx),...
                 PosX{i,j},InterpMethod);
-            DirEventMat{i,j} = dataMain(TrialIdxRange,3);
+            DirEventMat{i,j} = dataMain(TrialIdxRange,11);
             DirEventMat{i,j} = interp1(PosX{i,j},DirEventMat{i,j}(PosXUniqueIdx),...
                 PosX{i,j},InterpMethod);
             ResetSim{i,j} = dataMain(TrialIdxRange,7);
