@@ -108,47 +108,47 @@ nSubjects = size(Subjects,1);
 
 %subject 18554
 % EligibleTrials(1,[7,20,23,36,29]) = 0;
-% 
+%
 % %subject 19119
 % EligibleTrials(2,[2,9,13,20,25,32]) = 0;
-% 
+%
 % %subject 20418 all good
 % %subject 20502 all good
 % %subject 20588 all good
 % %subject 20660 all good
 % %subject 20662 all good
-% 
+%
 % %subject 20679
 % EligibleTrials(7,5) = 0;
-% 
+%
 % %subject 20685
 % EligibleTrials(2,13) = 0;
-% 
+%
 % %subject 20735
 % EligibleTrials(10,[10,17,20,28]) = 0;
-% 
+%
 % %subject 20743
 % EligibleTrials(11,[2,27]) = 0;
-% 
+%
 % %subject 20749 all good
 % %subject 20751 all good
-% 
+%
 % %subject 20752
 % EligibleTrials(14,[5,9,14,19,23,28]) = 0;
-% 
+%
 % %subject 20758
 % EligibleTrials(15,[13,16,20]) = 0;
-% 
+%
 % %subject 20760 - unclear
 % %subject 20765 all good
 % %subject 20769 all good
-% 
+%
 % %subject 20770
 % EligibleTrials(19,[1,2,5,14,17,20,28]) = 0;
-% 
+%
 % %subject 20790
 % EligibleTrials(20,5) = 0;
-% 
+%
 % %subject 20791
 % EligibleTrials(21,[15,31]) = 0;
 
@@ -216,8 +216,7 @@ for i = 1:nSubjects
             end
             
             %use secondary check to confirm steering congruence
-            congruence(i,j) = verifySteerState(HWPosition{i,j}(DirEvent.Idx(i,j)),...
-                PosY{i,j}(DirEvent.Idx(i,j)));
+            congruence(i,j) = verifySteerState(HWPosition{i,j},PosY{i,j},DirEvent.Idx(i,j));
             
             %populate turn direction matrix based on status of
             %SignDirection at the index of the direction trigger
@@ -301,42 +300,42 @@ for i = 1:nSubjects
     end
     
     %sort metrics into subject-wise mean
-%     crntHWRateRow = HWRateStruct.mean(i,:);
-%     crntHWAccelRow = HWAccelStruct.mean(i,:);
-%     crntHWJerkRow = HWJerkStruct.mean(i,:);
-%     crntVyRow = VyStruct.mean(i,:);
-%     crntAccelYRow = accelYStruct.mean(i,:);
-%     crntYawRateRow = YawRateStruct.mean(i,:);
-%     
-%     crntHWRateCongruentMean = crntHWRateRow(congruence(i,:) == 1);
-%     crntHWRateIncongruentMean = crntHWRateRow(congruence(i,:) == 0);
-%     HWRateStruct.CongruentMean(i,1) = mean(crntHWRateCongruentMean,'omitnan');
-%     HWRateStruct.IncongruentMean(i,1) = mean(crntHWRateIncongruentMean,'omitnan');
-%     
-%     crntHWAccelCongruentMean = crntHWAccelRow(congruence(i,:) == 1);
-%     crntHWAccelIncongruentMean = crntHWAccelRow(congruence(i,:) == 0);
-%     HWAccelStruct.CongruentMean(i,1) = mean(crntHWAccelCongruentMean,'omitnan');
-%     HWAccelStruct.IncongruentMean(i,1) = mean(crntHWAccelIncongruentMean,'omitnan');
-%     
-%     crntHWJerkCongruentMean = crntHWJerkRow(congruence(i,:) == 1);
-%     crntHWJerkIncongruentMean = crntHWJerkRow(congruence(i,:) == 0);
-%     HWJerkStruct.CongruentMean(i,1) = mean(crntHWJerkCongruentMean,'omitnan');
-%     HWJerkStruct.IncongruentMean(i,1) = mean(crntHWJerkIncongruentMean,'omitnan');
-%     
-%     crntVyCongruentMean = crntVyRow(congruence(i,:) == 1);
-%     crntVyIncongruentMean = crntVyRow(congruence(i,:) == 0);
-%     VyStruct.CongruentMean(i,1) = mean(crntVyCongruentMean,'omitnan');
-%     VyStruct.IncongruentMean(i,1) = mean(crntVyIncongruentMean,'omitnan');
-%     
-%     crntAccelYCongruentMean = crntAccelYRow(congruence(i,:) == 1);
-%     crntAccelYIncongruentMean = crntAccelYRow(congruence(i,:) == 0);
-%     accelYStruct.CongruentMean(i,1) = mean(crntAccelYCongruentMean,'omitnan');
-%     accelYStruct.IncongruentMean(i,1) = mean(crntAccelYIncongruentMean,'omitnan');
-%     
-%     crntYawRateCongruentMean = crntYawRateRow(congruence(i,:) == 1);
-%     crntYawRateIncongruentMean = crntYawRateRow(congruence(i,:) == 0);
-%     YawRateStruct.CongruentMean(i,1) = mean(crntYawRateCongruentMean,'omitnan');
-%     YawRateStruct.IncongruentMean(i,1) = mean(crntYawRateIncongruentMean,'omitnan');
+    %     crntHWRateRow = HWRateStruct.mean(i,:);
+    %     crntHWAccelRow = HWAccelStruct.mean(i,:);
+    %     crntHWJerkRow = HWJerkStruct.mean(i,:);
+    %     crntVyRow = VyStruct.mean(i,:);
+    %     crntAccelYRow = accelYStruct.mean(i,:);
+    %     crntYawRateRow = YawRateStruct.mean(i,:);
+    %
+    %     crntHWRateCongruentMean = crntHWRateRow(congruence(i,:) == 1);
+    %     crntHWRateIncongruentMean = crntHWRateRow(congruence(i,:) == 0);
+    %     HWRateStruct.CongruentMean(i,1) = mean(crntHWRateCongruentMean,'omitnan');
+    %     HWRateStruct.IncongruentMean(i,1) = mean(crntHWRateIncongruentMean,'omitnan');
+    %
+    %     crntHWAccelCongruentMean = crntHWAccelRow(congruence(i,:) == 1);
+    %     crntHWAccelIncongruentMean = crntHWAccelRow(congruence(i,:) == 0);
+    %     HWAccelStruct.CongruentMean(i,1) = mean(crntHWAccelCongruentMean,'omitnan');
+    %     HWAccelStruct.IncongruentMean(i,1) = mean(crntHWAccelIncongruentMean,'omitnan');
+    %
+    %     crntHWJerkCongruentMean = crntHWJerkRow(congruence(i,:) == 1);
+    %     crntHWJerkIncongruentMean = crntHWJerkRow(congruence(i,:) == 0);
+    %     HWJerkStruct.CongruentMean(i,1) = mean(crntHWJerkCongruentMean,'omitnan');
+    %     HWJerkStruct.IncongruentMean(i,1) = mean(crntHWJerkIncongruentMean,'omitnan');
+    %
+    %     crntVyCongruentMean = crntVyRow(congruence(i,:) == 1);
+    %     crntVyIncongruentMean = crntVyRow(congruence(i,:) == 0);
+    %     VyStruct.CongruentMean(i,1) = mean(crntVyCongruentMean,'omitnan');
+    %     VyStruct.IncongruentMean(i,1) = mean(crntVyIncongruentMean,'omitnan');
+    %
+    %     crntAccelYCongruentMean = crntAccelYRow(congruence(i,:) == 1);
+    %     crntAccelYIncongruentMean = crntAccelYRow(congruence(i,:) == 0);
+    %     accelYStruct.CongruentMean(i,1) = mean(crntAccelYCongruentMean,'omitnan');
+    %     accelYStruct.IncongruentMean(i,1) = mean(crntAccelYIncongruentMean,'omitnan');
+    %
+    %     crntYawRateCongruentMean = crntYawRateRow(congruence(i,:) == 1);
+    %     crntYawRateIncongruentMean = crntYawRateRow(congruence(i,:) == 0);
+    %     YawRateStruct.CongruentMean(i,1) = mean(crntYawRateCongruentMean,'omitnan');
+    %     YawRateStruct.IncongruentMean(i,1) = mean(crntYawRateIncongruentMean,'omitnan');
 end
 
 [HWRateStruct.IncongruentMean,HWRateStruct.CongruentMean] = ...
@@ -388,50 +387,55 @@ for i = 1:size(Subjects,1)
             %access hwposition vector for each trial using the 1st found location
             %and determine whether negative or positive peak
             
-            PosYPkIdx(i,j) = AllLocs{i,j}(1);
-            HWTurnPkVal = HWPosition{i,j}(AllLocs{i,j}(1));
-            
-            if HWTurnPkVal < 0 %if hw position is negative
-                TurnPeakSign(i,j)  = 1; %participant turned right
-            elseif HWTurnPkVal > 0 %if hw position is positive
-                TurnPeakSign(i,j)  = -1; %participant turned left
-            end
-            
-            %Compare hwposition sign, considering congruence and turn
-            %direction for all 4 cases
-            if congruence(i,j) == 1 && TurnDirection(i,j) == 1 %congruent, right
-                %we expect to see TurnPeakSign = 1 and a negative PosYPkVal
-                if (TurnPeakSign(i,j) ~= 1)
-                    CorrectTurn(i,j) = 0;
-                    IncorrectCount = IncorrectCount + 1;
-                    %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
+            if isempty(AllLocs{i,j})
+                EligibleTrials(i,j) = 0;
+                continue
+            else
+                PosYPkIdx(i,j) = AllLocs{i,j}(1);
+                HWTurnPkVal = HWPosition{i,j}(AllLocs{i,j}(1));
+                
+                if HWTurnPkVal < 0 %if hw position is negative
+                    TurnPeakSign(i,j)  = 1; %participant turned right
+                elseif HWTurnPkVal > 0 %if hw position is positive
+                    TurnPeakSign(i,j)  = -1; %participant turned left
                 end
-            elseif congruence(i,j) == 1 && TurnDirection(i,j) == 0 %congruent, left
-                %we expect to see TurnPeakSign = -1 and positive PosYPkVal
-                if (TurnPeakSign(i,j) ~= -1)
-                    CorrectTurn(i,j) = 0;
-                    IncorrectCount = IncorrectCount + 1;
-                    %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
+                
+                %Compare hwposition sign, considering congruence and turn
+                %direction for all 4 cases
+                if congruence(i,j) == 1 && TurnDirection(i,j) == 1 %congruent, right
+                    %we expect to see TurnPeakSign = 1 and a negative PosYPkVal
+                    if (TurnPeakSign(i,j) ~= 1)
+                        CorrectTurn(i,j) = 0;
+                        IncorrectCount = IncorrectCount + 1;
+                        %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
+                    end
+                elseif congruence(i,j) == 1 && TurnDirection(i,j) == 0 %congruent, left
+                    %we expect to see TurnPeakSign = -1 and positive PosYPkVal
+                    if (TurnPeakSign(i,j) ~= -1)
+                        CorrectTurn(i,j) = 0;
+                        IncorrectCount = IncorrectCount + 1;
+                        %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
+                    end
+                elseif congruence(i,j) == 0 && TurnDirection(i,j) == 1 %incongruent, right
+                    %we expect to see TurnPeakSign = -1 and negative PosYPkVal
+                    if (TurnPeakSign(i,j) ~= -1)
+                        CorrectTurn(i,j) = 0;
+                        IncorrectCount = IncorrectCount + 1;
+                        %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
+                    end
+                elseif congruence(i,j) == 0 && TurnDirection(i,j) == 0 %incongruent, left
+                    %we expect to see TurnPeakSign = 1 and positive PosYPkVal
+                    if (TurnPeakSign(i,j) ~= 1)
+                        CorrectTurn(i,j) = 0;
+                        IncorrectCount = IncorrectCount + 1;
+                        %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
+                    end
                 end
-            elseif congruence(i,j) == 0 && TurnDirection(i,j) == 1 %incongruent, right
-                %we expect to see TurnPeakSign = -1 and negative PosYPkVal
-                if (TurnPeakSign(i,j) ~= -1)
+                %Make the correct turn check more robust - check for return to
+                %single lane
+                if(PosY{i,j}(EndEvent.Idx(i,j)) > 2 || PosY{i,j}(EndEvent.Idx(i,j)) < -2)
                     CorrectTurn(i,j) = 0;
-                    IncorrectCount = IncorrectCount + 1;
-                    %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
                 end
-            elseif congruence(i,j) == 0 && TurnDirection(i,j) == 0 %incongruent, left
-                %we expect to see TurnPeakSign = 1 and positive PosYPkVal
-                if (TurnPeakSign(i,j) ~= 1)
-                    CorrectTurn(i,j) = 0;
-                    IncorrectCount = IncorrectCount + 1;
-                    %disp(['Incorrect turn - subject ',num2str(i),', trial ',num2str(j)]);
-                end
-            end
-            %Make the correct turn check more robust - check for return to
-            %single lane
-            if(PosY{i,j}(EndEvent.Idx(i,j)) > 2 || PosY{i,j}(EndEvent.Idx(i,j)) < -2)
-                CorrectTurn(i,j) = 0;
             end
         end
     end
@@ -463,13 +467,13 @@ end
 BadPathCount = numel(find(CorrectTurn == 0));
 IneligibleTrialCount = numel(find(EligibleTrials == 0));
 TrialsRemaining = TotalTrialCount - IneligibleTrialCount - BadPathCount;
-FractionRemaining = (TrialsRemaining / TotalTrialCount) * 100;
+PercentRemaining = (TrialsRemaining / TotalTrialCount) * 100;
 
 disp('**Correct trial ID Complete**');
 disp(['Total Trials = ',num2str(TotalTrialCount)]);
 disp(['Ineligible Trials = ',num2str(IneligibleTrialCount)]);
 disp(['Trials Omitted from correct path check = ',num2str(BadPathCount)]);
-disp(['% Yield = ',num2str(FractionRemaining,3)]);
+disp(['% Yield = ',num2str(PercentRemaining,3)]);
 disp(['Trials Remaining = ',num2str(TrialsRemaining)]);
 
 %find how many bad trials for each subject
@@ -1290,7 +1294,7 @@ text(272,22,'End Trigger');
 %     mean(reversals.CongruentMeanNum(meanDoubleLaneStartIdx:meanSingleLaneStartIdx),'omitnan');
 % reversals.CongruentMeanSection3Num = ...
 %     mean(reversals.CongruentMeanNum(meanSingleLaneStartIdx:end),'omitnan');
-% 
+%
 % %break down congruent reversals per second by trial section
 % reversals.CongruentMeanSection1NumPerSec = ...
 %     mean(reversals.CongruentMeanNumPerSec(1:meanDoubleLaneStartIdx),'omitnan');
@@ -1298,7 +1302,7 @@ text(272,22,'End Trigger');
 %     mean(reversals.CongruentMeanNumPerSec(meanDoubleLaneStartIdx:meanSingleLaneStartIdx),'omitnan');
 % reversals.CongruentMeanSection3NumPerSec = ...
 %     mean(reversals.CongruentMeanNumPerSec(meanSingleLaneStartIdx:end),'omitnan');
-% 
+%
 % %break down incongruent number reversals by trial section
 % reversals.IncongruentMeanSection1Num = ...
 %     mean(reversals.IncongruentMeanNum(1:meanDoubleLaneStartIdx),'omitnan');
@@ -1306,7 +1310,7 @@ text(272,22,'End Trigger');
 %     mean(reversals.IncongruentMeanNum(meanDoubleLaneStartIdx:meanSingleLaneStartIdx),'omitnan');
 % reversals.IncongruentMeanSection3Num = ...
 %     mean(reversals.IncongruentMeanNum(meanSingleLaneStartIdx:end),'omitnan');
-% 
+%
 % %break down incongruent reversals per second by trial section
 % reversals.IncongruentMeanSection1NumPerSec = ...
 %     mean(reversals.IncongruentMeanNumPerSec(1:meanDoubleLaneStartIdx),'omitnan');
