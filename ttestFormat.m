@@ -2,6 +2,10 @@ function [ttestGroup1,ttestGroup2] = ttestFormat(metric,separator,separatorName)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
+dim1 = size(metric,1);
+dim2 = size(metric,2);
+separator = separator(1:dim1,1:dim2);
+
 if(strcmp(separatorName,'congruence'))
     for i = 1:size(metric,1)
         crntRow = metric(i,:);

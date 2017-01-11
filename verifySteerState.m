@@ -1,17 +1,24 @@
-function [ steerState ] = verifySteerState(steerInput,PosY,DirIdx)
+function [ steerState ] = verifySteerState(steerPos,PosY,DirIdx)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
 steerState = 1; %default to congruent
-posY_dirTrigger = PosY(DirIdx);
+initPosY = PosY(DirIdx);
+delta = 100;
 
 %if signs agree, congruent steering
-if(steerInput(DirIdx) < 0 && PosY(DirIdx + 50) > posY_dirTrigger)
-    steerState = 1;
-elseif (steerInput(DirIdx) > 0 && PosY(DirIdx + 50) < posY_dirTrigger)
-    steerState = 1;
-else
-    steerState = 0;
+if(steerPos(DirIdx) > 0)
+    if(PosY(DirIdx+delta) > initPosY)
+        steerState = 1;
+    else
+        steerState = 0;
+    end
+elseif(steerPos(DirIdx) < 0)
+    if(PosY(DirIdx+delta) < initPosY)
+        steerState = 1;
+    else
+        steerState = 0;
+    end
 end
 
 end

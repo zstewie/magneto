@@ -134,6 +134,10 @@ switch strtrim(evalc('system(''hostname'');'))
         p = fullfile('/Users/Zach/StanfordDropbox/Dropbox',varargin{:});
     case 'DN0a22c524.SUNet'
         p = fullfile('/Users/Zach/StanfordDropbox/Dropbox',varargin{:});
+    case 'DN0a225467.SUNet'
+        p = fullfile('/Users/Zach/StanfordDropbox/Dropbox',varargin{:});
+    case 'DN0a225664.SUNet'
+        p = fullfile('/Users/Zach/StanfordDropbox/Dropbox',varargin{:});
 %##%
 % End hostname cases
     otherwise

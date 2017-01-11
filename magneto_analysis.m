@@ -83,6 +83,7 @@ HWPks = cell(size(PosX));
 HWLocs = cell(size(PosX));
 ReversalsPerSec = NaN(size(PosX));
 deltaT = NaN(size(PosX));
+HWRateStruct.matrix = cell(size(PosX));
 
 %acceleration metrics
 accelX = cell(size(PosX));
@@ -102,56 +103,6 @@ repeatFlag = zeros(size(PosX));
 participant = cell(size(PosX));
 
 nSubjects = size(Subjects,1);
-
-%% Manual eligibility check (based on redcap notes)
-%last update ZS 07.22.16
-
-%subject 18554
-% EligibleTrials(1,[7,20,23,36,29]) = 0;
-%
-% %subject 19119
-% EligibleTrials(2,[2,9,13,20,25,32]) = 0;
-%
-% %subject 20418 all good
-% %subject 20502 all good
-% %subject 20588 all good
-% %subject 20660 all good
-% %subject 20662 all good
-%
-% %subject 20679
-% EligibleTrials(7,5) = 0;
-%
-% %subject 20685
-% EligibleTrials(2,13) = 0;
-%
-% %subject 20735
-% EligibleTrials(10,[10,17,20,28]) = 0;
-%
-% %subject 20743
-% EligibleTrials(11,[2,27]) = 0;
-%
-% %subject 20749 all good
-% %subject 20751 all good
-%
-% %subject 20752
-% EligibleTrials(14,[5,9,14,19,23,28]) = 0;
-%
-% %subject 20758
-% EligibleTrials(15,[13,16,20]) = 0;
-%
-% %subject 20760 - unclear
-% %subject 20765 all good
-% %subject 20769 all good
-%
-% %subject 20770
-% EligibleTrials(19,[1,2,5,14,17,20,28]) = 0;
-%
-% %subject 20790
-% EligibleTrials(20,5) = 0;
-%
-% %subject 20791
-% EligibleTrials(21,[15,31]) = 0;
-
 %% Identify event triggers, populate congruence/turn direction matrix
 %last update ZS 03.18.16
 
@@ -161,10 +112,12 @@ dt = time{1,1}(2) - time{1,1}(1);
 
 %for each subject, check to see how many trials were completed
 for i = 1:nSubjects
-    if isempty(find(cellfun(@isempty,PosX(i,:)),1))
-        nTrials_current = nTrials - 1;
-    else
-        nTrials_current = find(cellfun(@isempty,PosX(i,:)),1) - 1;
+    nTrials_current = nTrials;
+    for n = 1:nTrials
+        if(isempty(PosX(i,n)) || size(PosX{i,n},1) < 2000)
+            %disp(['Cell ' num2str(i),', ',num2str(n),' is empty or small']);
+            nTrials_current = nTrials_current - 1;
+        end
     end
     Subjects(i).nTrials = nTrials_current;
     EligibleTrials(i,Subjects(i).nTrials+1:end) = 0;
@@ -214,9 +167,6 @@ for i = 1:nSubjects
                     congruence(i,j) = 1; %SteeringState = 0 --> congruent trial
                 end
             end
-            
-            %use secondary check to confirm steering congruence
-            congruence(i,j) = verifySteerState(HWPosition{i,j},PosY{i,j},DirEvent.Idx(i,j));
             
             %populate turn direction matrix based on status of
             %SignDirection at the index of the direction trigger
@@ -294,10 +244,107 @@ for i = 1:nSubjects
             YawJerkStruct.mean(i,j) = mean(YawJerkStruct.matrix{i,j});
             YawJerkStruct.rms(i,j) = rms(YawJerkStruct.matrix{i,j});
             
+            %use secondary check to confirm steering congruence
+            %congruence(i,j) = verifySteerState(HWPosition{i,j},PosY{i,j},DirEvent.Idx(i,j));
+            
+            initHWPos(i,j) = HWPosition{i,j}(DirEvent.Idx(i,j));
+            initPosY(i,j) = PosY{i,j}(DirEvent.Idx(i,j));
+            delayPosY(i,j) = PosY{i,j}(DirEvent.Idx(i,j) + 100);
+            
             %count trials
             TotalTrialCount = TotalTrialCount + 1;
         end
     end
+    
+    %% rebuild congruence & turn direction manually
+    %congruence --> 0 is incongruent, 1 is congruent (inverse from trial guide - need to fix this in all experiments...)
+    congruence = [1 0 0 1 1 0 1 1 0 1 0 1 1 0 0 0 1 1 0 1 0 1 0 1 1 1 0 0 0 1 0 0];
+    congruence = repmat(congruence,10,1);
+    %TurnDirection --> 0 is right, 1 is left
+    TurnDirection = [0 0 1 1 1 1 1 0 1 0 0 1 0 1 0 0 0 1 0 0 1 1 0 0 1 0 0 1 1 1 1 0];
+    TurnDirection = repmat(TurnDirection,10,1);
+    
+    %[zeros(1,nTrials-nNominalTrials)]
+    
+    %account for repeated trials manually
+    %subject 21328 - perfect 32
+    %subject 21329
+    crntRow = 2;
+    congruence(crntRow,nNominalTrials+1) = 1; %place trial 20 at end
+    TurnDirection(crntRow,nNominalTrials+1) = 0;
+    congruence(crntRow,nNominalTrials+2) = 0; %place trial 21 at end
+    TurnDirection(crntRow,nNominalTrials+2) = 1;
+    %subject 21335
+    crntRow = 3;
+    congruence(crntRow,nNominalTrials+1) = 0; %place trial 2 at end
+    TurnDirection(crntRow,nNominalTrials+1) = 0;
+    congruence(crntRow,nNominalTrials+2) = 0; %place trial 16 at end
+    TurnDirection(crntRow,nNominalTrials+2) = 0;
+    congruence(crntRow,nNominalTrials+3) = 0; %place trial 19 at end
+    TurnDirection(crntRow,nNominalTrials+3) = 0;
+    congruence(crntRow,nNominalTrials+4) = 0; %place trial 27 at end
+    TurnDirection(crntRow,nNominalTrials+4) = 0;
+    congruence(crntRow,nNominalTrials+5) = 0; %place trial 32 at end
+    TurnDirection(crntRow,nNominalTrials+5) = 0;
+    %subject 21336 - perfect 32
+    %subject 21337
+    crntRow = 5;
+    congruence(crntRow,nNominalTrials+1) = 0; %place trial 2 at end
+    TurnDirection(crntRow,nNominalTrials+1) = 0;
+    congruence(crntRow,nNominalTrials+2) = 1; %place trial 4 at end
+    TurnDirection(crntRow,nNominalTrials+2) = 1;
+    congruence(crntRow,nNominalTrials+3) = 0; %place trial 6 at end
+    TurnDirection(crntRow,nNominalTrials+3) = 1;
+    congruence(crntRow,nNominalTrials+4) = 0; %place trial 11 at end
+    TurnDirection(crntRow,nNominalTrials+4) = 0;
+    congruence(crntRow,nNominalTrials+5) = 0; %place trial 14 at end
+    TurnDirection(crntRow,nNominalTrials+5) = 1;
+    congruence(crntRow,nNominalTrials+6) = 1; %place trial 17 at end
+    TurnDirection(crntRow,nNominalTrials+6) = 0;
+    %subject 21338
+    crntRow = 6;
+    %additional editing due to user error
+    congruence(crntRow,4) = 0;
+    TurnDirection(crntRow,4) = 1;
+    congruence(crntRow,6) = 1;
+    TurnDirection(crntRow,6) = 1;
+    congruence(crntRow,nNominalTrials+1) = 0; %place trial 3 at end
+    TurnDirection(crntRow,nNominalTrials+1) = 1;
+    congruence(crntRow,nNominalTrials+2) = 1; %place trial 4 at end
+    TurnDirection(crntRow,nNominalTrials+2) = 1;
+    congruence(crntRow,nNominalTrials+3) = 0; %place trial 19 at end
+    TurnDirection(crntRow,nNominalTrials+3) = 0;
+    congruence(crntRow,nNominalTrials+4) = 0; %place trial 29 at end
+    TurnDirection(crntRow,nNominalTrials+4) = 1;
+    %subject 21339
+    crntRow = 7;
+    congruence(crntRow,nNominalTrials+1) = 0; %place trial 19 at end
+    TurnDirection(crntRow,nNominalTrials+1) = 0;
+    %subject 21340
+    crntRow = 8;
+    congruence(crntRow,nNominalTrials+1) = 1; %place trial 30 at end
+    TurnDirection(crntRow,nNominalTrials+1) = 1;
+    %subject 21341
+    crntRow = 9;
+    congruence(crntRow,nNominalTrials+1) = 1; %place trial 1 at end
+    TurnDirection(crntRow,nNominalTrials+1) = 0;
+    congruence(crntRow,nNominalTrials+2) = 0; %place trial 11 at end
+    TurnDirection(crntRow,nNominalTrials+2) = 0;
+    congruence(crntRow,nNominalTrials+3) = 0; %place trial 19 at end
+    TurnDirection(crntRow,nNominalTrials+3) = 0;
+    %subject 21343 - perfect 32
+    %subject 21347
+    %subject 21348
+    %subject 21349
+    %subject 21350
+    %subject 21351
+    %subject 21366
+    
+    
+    congruence = [congruence zeros(10,1)];
+    TurnDirection = [TurnDirection zeros(10,1)];
+    
+    %%
     
     %sort metrics into subject-wise mean
     %     crntHWRateRow = HWRateStruct.mean(i,:);

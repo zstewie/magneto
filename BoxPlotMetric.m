@@ -5,6 +5,10 @@ function [] = BoxPlotMetric(metric, metricMean, mytitle, metricLabel, congruence
 %   desired. Metric mean contains overall mean for congruent and
 %   incongruent trials --> metricMean = (incongruentmean,congruentmean)
 
+dim1 = size(metric,1);
+dim2 = size(metric,2);
+congruence = congruence(1:dim1,1:dim2);
+
 NaNFiller = NaN((length(metric(congruence == 0)) - ...
     length(metric(congruence == 1))),1);
 figure;
