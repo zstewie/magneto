@@ -767,7 +767,7 @@ reversals.groupSplit_numPerSec = metricSplitter(reversals.numPerSec,groupNum);
 
 %define mean trigger locations for later use
 meanDirEventPos = mean(mean(DirEvent.Pos,'omitnan'),'omitnan');
-meanDirEventIdx = mean(mean(DirEvent.Idx,'omitnan'),'omitnan');
+meanDirEventIdx = mean(mean(DirEvent.Idx(DirEvent.Idx ~= 0)));
 meanEndEventPos = mean(mean(EndEvent.Pos,'omitnan'),'omitnan');
 
 %% Metric: Vehicle Position
@@ -1182,8 +1182,8 @@ latError.OverallIncongruentStd = std(InconLatError_concat,1)';
 longError.OverallIncongruentMean = mean(InconLongError_concat,1)';
 longError.OverallIncongruentStd = std(InconLongError_concat,1)';
 
-meanDoubleLaneStartIdx = floor(mean(mean(doubleLaneStartIdx,'omitnan')) - meanDirEventIdx);
-meanSingleLaneStartIdx = floor(mean(mean(singleLaneStartIdx,'omitnan')) - meanDirEventIdx);
+meanDoubleLaneStartIdx = floor(mean(mean(doubleLaneStartIdx,'omitnan'),'omitnan') - meanDirEventIdx);
+meanSingleLaneStartIdx = floor(mean(mean(singleLaneStartIdx,'omitnan'),'omitnan') - meanDirEventIdx);
 
 %split metric based on group number
 latError.groupSplit = metricSplitter(latError.mean,groupNum);
